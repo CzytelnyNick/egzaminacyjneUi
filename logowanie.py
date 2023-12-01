@@ -19,8 +19,9 @@ class Login(QWidget):
         self.ui.images.addWidget(self.imgLabel)
         self.ui.checkButton.clicked.connect(self.check)
         self.price = QLabel()
-        self.price.setStyleSheet("font-weight: bold; margin-bottom: 40px;  font-size: 16px" )
+        self.price.setStyleSheet("font-weight: bold; margin-bottom: 40px;  font-size: 16px")
         self.ui.images.addWidget(self.price)
+        self.ui.submitButton.clicked.connect(self.submit)
     def check(self):
         if self.ui.listRadio.isChecked():
            self.imgLabel.setPixmap(self.listImg)
@@ -31,6 +32,22 @@ class Login(QWidget):
         elif self.ui.card.isChecked():
             self.imgLabel.setPixmap(self.cardImg)
             self.price.setText("Cena: 1 zł")
+    def submit(self):
+        error = 0
+        if len(self.ui.postCode.text()) < 5 or len(self.ui.postCode.text()) > 5:
+            error = 1
+            
+        # try:
+        #     int(self.ui.postCode)
+        # except:
+        #     error = 2
+        if error == 0:
+            QMessageBox.information(self, "Sukces", "Dane przesylki zostaly wprowadzone")
+        elif error == 1:
+            QMessageBox.warning(self, "BŁĄD", "Nieprawidlowa liczba cyfr w kodzie pocztowym")
+        elif error == 2:
+            QMessageBox.warning(self, "BŁĄD", "„Kod pocztowy powinien się składać z samych cyfr")
+
 app = QApplication(sys.argv)
 logowanie = Login()
 sys.exit(app.exec())
